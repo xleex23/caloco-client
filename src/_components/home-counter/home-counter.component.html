@@ -1,13 +1,23 @@
-<section>
-    <h1>CaloCo</h1>
-    <div class="calculate-tabs">
-        <div (click)="toggleTab('add')" [ngClass]="active_tab === 'add' ? 'cal-tab active-tab': 'cal-tab'">Add</div>
-        <div (click)="toggleTab('subtract')" [ngClass]="active_tab === 'subtract' ? 'cal-tab active-tab': 'cal-tab'">Subtract</div>
+<section class="counter-container">
+    <div class="header">
+        <h1>CaloCo</h1>
+    </div>
+    <div class="calculate-tabs top-tabs">
+        <div (click)="toggleTab('count', 'add')"  [ngClass]="active_count_tab === 'add' ? 'cal-tab active-tab': 'cal-tab'">Add</div>
+        <div (click)="toggleTab('count', 'subtract')" [ngClass]="active_count_tab === 'subtract' ? 'cal-tab active-tab': 'cal-tab'">Subtract</div>
     </div>
     <div class="current-total">
-        Current Total: {{ current_total }}
+        <div>Calories: {{ current_cal }}</div>
+        <div>Protein: {{ current_pro }}</div>
     </div>
-    <div>
-        <input type="number" />
+    <div class="input-container">
+        <input type="number" min="0" appInteger class="value-input" [formControl]="integer_input"/>
     </div>
+
+    <div class="calculate-tabs bottom-tabs">
+        <div (click)="toggleTab('macro', 'cals')" [ngClass]="active_macro_tab === 'cals' ? 'cal-tab active-tab': 'cal-tab'">Calories</div>
+        <div (click)="toggleTab('macro', 'pro')" [ngClass]="active_macro_tab === 'pro' ? 'cal-tab active-tab': 'cal-tab'">Protein</div>
+    </div>
+
+    <button class="update-btn" (click)="update()">Update</button>
 </section>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeCounterComponent } from '../_components/home-counter/home-counter.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -11,6 +11,7 @@ import { HomeCounterComponent } from '../_components/home-counter/home-counter.c
     imports: [
         BrowserModule,
         AppRoutingModule,
+        NoopAnimationsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
