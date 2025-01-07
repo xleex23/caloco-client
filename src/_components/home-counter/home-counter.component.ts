@@ -13,8 +13,8 @@ export class HomeCounterComponent {
     public integer_input: FormControl = new FormControl();
     public active_count_tab: string = 'add';
     public active_macro_tab: string = 'cals';
-    public current_cal: number = 2399;
-    public current_pro: number = 189;
+    public current_cal: number;
+    public current_pro: number;
     private validCombinations = {
         add: {
           cals: () => {
