@@ -1,0 +1,27 @@
+:host {
+    text-align: center;
+}
+
+.calculate-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    .cal-tab {
+        display: flex;
+        justify-content: center;
+        width: 55px;
+        background-color: rgb(120, 120 , 120);
+        color: #ffffff;
+        border: none;
+        outline: none;
+        padding: 15px;
+        cursor: pointer;
+    }
+    .active-tab {
+        background-color: rgb(41, 33, 113);
+    }
+}
+
+.current-total {
+    font-size: 1.5rem;
+}
