@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { HomeServiceService } from 'src/app/services/home-service.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class HomeCounterComponent {
         password: ['', Validators.required, Validators.minLength(8), this.passwordValidator()],
         birthdate: [new Date().toISOString(), Validators.required, this.minimumAgeValidator(18)]
     })
+    public taskForm: FormGroup = this.fb.group({});
     private data: any[] = [];
     private errorMessage: string = '';
     public isSubmitted: boolean = false;
@@ -119,6 +120,17 @@ export class HomeCounterComponent {
             // Else, return an error with the minimum age and the calculated age.
             return age >= minAge ? null : { minimumAge: { requiredAge: minAge, actualAge: age } };
         };
+    }
+
+    updateControls() {
+        if (this.data.length > 0) {
+            const controls = this.data.reduce((acc, task) => {
+                acc[task.id] = new FormControl(task.priority); // Initialize each task's priority as a FormControl
+                return acc;
+              }, {});
+          
+              this.taskForm = this.fb.group(controls);
+        }
     }
       
 }
