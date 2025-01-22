@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
@@ -23,12 +23,23 @@ export class HomeServiceService {
     constructor(
         private http: HttpClient
     ) { }
+    
+    buildHeaders(): HttpHeaders {
+        const token = localStorage.getItem('authToken');
+        return new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Custom-Header': 'CustomHeaderValue'
+        });
+    }
 
     getData(): Observable<DataModel[]> {
-        return this.http.get<DataModel[]>(this.api_url).pipe(
+        const headers = this.buildHeaders();
+
+        return this.http.get<DataModel[]>(this.api_url, { headers }).pipe(
             map((response: DataModel[]) => response),
             catchError(this.handleError)
-        )
+        );
     }
 
     createNew(payload: DataModel): Observable<ResDataModel> {
