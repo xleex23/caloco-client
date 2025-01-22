@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DataModel, HomeServiceService } from 'src/app/services/home-service.service';
 
 @Component({
@@ -14,11 +14,12 @@ export class HomeCounterComponent {
         name: ['', [Validators.required, Validators.minLength(2)]],
         email: ['', [Validators.required, Validators.email]],
         phone_number: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
-        student_id: ['', Validators.required, Validators.pattern(/^\d+$/)]
+        student_id: ['', Validators.required, Validators.pattern(/^\d+$/)],
+        password: ['', Validators.required, Validators.minLength(8), this.passwordValidator()]
     })
     private data: any[] = [];
     private errorMessage: string = '';
-
+    public isSubmitted: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -68,5 +69,33 @@ export class HomeCounterComponent {
                 this.errorMessage = error.message
             }
         })
+    }
+
+    submitForm() {
+        if (this.someForm.valid) {
+            this.data = this.someForm.value;
+            this.isSubmitted = true;
+            this.someForm.reset();
+        }
+        else {
+            this.someForm.markAllAsTouched();
+            console.error('Invalid form')
+        }
+    };
+
+    passwordValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors => {
+            const value = control.value;
+            if (!value) {
+                return null;
+            }
+
+            const hasNumber = /\d/.test(value); // Check for at least one number
+            const hasLetter = /[a-zA-Z]/.test(value); // Check for at least one letter
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value); // Check for at least one special character
+
+            const isValid = hasNumber && hasLetter && hasSpecial;
+            return isValid ? null : { passwordStrength: true };
+        }
     }
 }
