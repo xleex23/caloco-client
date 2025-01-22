@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, lastValueFrom, map, Observable, throwError } from 'rxjs';
 
 export interface DataModel {
     type: string;
@@ -70,5 +70,14 @@ export class HomeServiceService {
             );
         };
         return throwError(() => new Error(`Something went wrong. Please try again later.`));
+    }
+
+    async videoAdSearch(term: string): Promise<DataModel[]> {
+        const headers = this.buildHeaders();
+        //const filtersParams = onlyValidAds ? `?onlyValidAds=${onlyValidAds}` : '';
+        return await lastValueFrom(this.http.get<{ data: DataModel[], error: string }>(`/video-ads/search/${term}`, {headers}))
+            .then((res) => {
+                return res.data;
+            });
     }
 }

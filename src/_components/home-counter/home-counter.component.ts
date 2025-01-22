@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { debounceTime, filter } from 'rxjs';
 import { HomeServiceService } from 'src/app/services/home-service.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class HomeCounterComponent {
     public taskForm: FormGroup = this.fb.group({});
     private data: any[] = [];
     private errorMessage: string = '';
+    private search_input: FormControl<string> = new FormControl('');
     public isSubmitted: boolean = false;
 
     get dataItems(): any[] {
@@ -131,6 +133,18 @@ export class HomeCounterComponent {
           
               this.taskForm = this.fb.group(controls);
         }
+    }
+
+    subscribeToSearch() {
+        this.search_input.valueChanges.pipe(
+            debounceTime(750),
+            filter(v => typeof v === 'string')
+        ).subscribe(async (search_string) => {
+            if (!search_string) {
+                return;
+            }
+            this.data = await this.homeSrv.videoAdSearch(search_string);
+        })
     }
       
 }
