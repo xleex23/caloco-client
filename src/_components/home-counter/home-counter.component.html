@@ -1,2 +1,71 @@
 <section>
+    <form [formGroup]="registration_form" class="registration-form" (ngSubmit)="submitForm()" *ngIf="!isSubmitted">
+        <h2>Registration Form</h2>
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="student_name" />
+        </mat-form-field>
+        <div class="error-message" *ngIf="registration_form.get('student_name')?.touched && registration_form.get('student_name')?.invalid">
+            <small *ngIf="registration_form.get('student_name')?.errors?.['required']">Name is required</small>
+            <small *ngIf="registration_form.get('student_name')?.errors?.['minlength']">Must be at least 2 characters</small>
+        </div>
+
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+        </mat-form-field>
+        <div *ngIf="registration_form.get('email')?.touched && registration_form.get('email')?.invalid" class="error-message">
+            <small *ngIf="registration_form.get('email')?.errors?.['required']">Email is required</small>
+            <small *ngIf="registration_form.get('email')?.errors?.['email']">Enter a valid email</small>
+        </div>
+
+        <mat-form-field>
+            <mat-label>Student ID</mat-label>
+            <input matInput formControlName="student_id" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Birth Date</mat-label>
+            <input matInput formControlName="dob" type="date"/>
+        </mat-form-field>
+        <input id="birth_date" type="date" formControlName="birth_date" />
+        <div *ngIf="registrationForm.get('birth_date')?.touched && registrationForm.get('birth_date')?.invalid">
+            <small *ngIf="registrationForm.get('birth_date')?.errors?.['required']">Birth date is required.</small>
+            <small *ngIf="registrationForm.get('birth_date')?.errors?.['minimumAge']">
+                You must be at least {{ registrationForm.get('birth_date')?.errors?.['minimumAge'].requiredAge }} years old.
+            </small>
+        </div>
+
+        <button class="submit-btn" type="submit">Submit</button>
+    </form>
+
+    <div *ngIf="isSubmitted" class="success-msg">
+        <p>Form has been successfully submitted.  Thank you!</p>
+    </div>
+
+    <div *ngIf="someForm">
+        <h3>Summary</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>Name: </td>
+                  <td>{{ formData.student_name }}</td>
+                </tr>
+                <tr>
+                  <td>Email: </td>
+                  <td>{{ formData.email }}</td>
+                </tr>
+                <tr>
+                  <td>Age: </td>
+                  <td>{{ formData.dob | date: 'shortDate' }}</td>
+                </tr>
+              </tbody>
+        </table>
+    </div>
 </section>

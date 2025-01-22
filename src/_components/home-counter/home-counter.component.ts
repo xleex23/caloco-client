@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DataModel, HomeServiceService } from 'src/app/services/home-service.service';
+import { HomeServiceService } from 'src/app/services/home-service.service';
 
 @Component({
   selector: 'app-home-counter',
@@ -21,6 +21,14 @@ export class HomeCounterComponent {
     private data: any[] = [];
     private errorMessage: string = '';
     public isSubmitted: boolean = false;
+
+    get dataItems(): any[] {
+        return this.data;
+    }
+    
+    get errorMsg(): string {
+        return this.errorMessage;
+    }
 
     constructor(
         private fb: FormBuilder,
@@ -111,6 +119,6 @@ export class HomeCounterComponent {
             // Else, return an error with the minimum age and the calculated age.
             return age >= minAge ? null : { minimumAge: { requiredAge: minAge, actualAge: age } };
         };
-      }
+    }
       
 }
